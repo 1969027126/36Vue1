@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+<div id="demo">
+    <img :src="imgBigUrl" id="bigImg">
+    <p>颜色选型</p>
+    <div v-for="(item,index) in listFans" :class=['item',{'select':current==index}] @click="handleClick(index)"><img :src="item.imgUrl"/>{{item.desc}}</div>
+
+</div>
+<script>
+    new Vue({
+        el:'#demo',
+        data:function () {
+            return{
+                current:0,
+                imgBigUrl:'images/01.jpg',
+                listFans:[{
+                    desc:'蓝色【三档强劲风力-升级静音版】带底座',
+                    imgUrl:'images/01.jpg',
+                    imgBigUrl:'images/01.jpg'},
+                    {desc:'粉色【三档强劲风力-升级静音版】带底座',
+                    imgUrl:'images/02.jpg',
+                    imgBigUrl:'images/02.jpg'},
+                    {desc:'白色【三档强劲风力-升级静音版】带底座',
+                        imgUrl:'images/03.jpg',
+                        imgBigUrl:'images/03.jpg'},
+                    {desc:'灰色【三档强劲风力-升级静音版】带底座',
+                        imgUrl:'images/04.jpg',
+                        imgBigUrl:'images/04.jpg' }]
+
+            },
+               methods:{
+              handleClick:function (index) {
+                  this.current=index;
+                  this.imgBigUrl=this.listFans[index].imgBigUrl;
+              }
+            }
+
+        }
+    })
+</script>
+</body>
+</html>

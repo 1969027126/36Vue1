@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+<div id="shop">
+    <table border="1" cellspacing="0" id="shopTable">
+        <tr>
+            <th><input type="checkbox" v-model="selectAll" @change="change">全选</th>
+            <th>商品序号</th>
+            <th>商品编号</th>
+            <th>商品名称</th>
+            <th>商品数量</th>
+            <th>商品单价</th>
+            <th>移除</th>
+        </tr>
+
+    <tbody>
+       <tr v-for="(item, index) in list" :key="item.id">
+           <td><input type="checkbox" v-model="item.selected" :key="item.id">选择</td>
+           <td>{{index+1}}</td>
+           <td>{{item.id}}</td>
+           <td>{{item.name}}</td>
+           <td><button @click="reduce(index)">-</button><input type="text" v-model.number="item.count" class="txtCnt"><button @click="add(index)">+</button></td>
+           <td>{{item.price}}</td>
+           <td><button @click="remove(index)">删除</button></td>
+       </tr>
+
+    </tbody>
+        <tr v-if="list.length>0">
+            <td colspan="7">总价为：<span class="total">{{totalPrice}}</span>元</td>
+        </tr>
+    <tr v-else>
+        <td colspan="7">此购物车中无商品</td>
+    </tr>
+    </table>
+</div>
+<script>
+    new Vue({
+        el:'#shop',
+        data: function () {
+            return{
+                selectAll:false,
+                list:[{id:'001',name:'iphoneX',count:1,price:6188,selected:false},
+                    {id:'002',name:'华为p30',count:2,price:5934,selected:false},
+                    {id:'003',name:'小米',count:1,price:4299,selected:false},
+                    {id:'004',name:'华为畅享',count:3,price:799,selected:false}
+                ]
+            }
+        },
+        computed:{
+            totalPrice:function () {
+                var total=0;
+                for (var i=0;i<this.list.length;i++){
+                   total+=this.list[i].price * this.list[i].count*this.list[i].selected;
+
+                }
+                return total;
+            },
+            checkList:function () {
+                var checked=true;
+                this.list.forEach(function (value) {
+                    checked*=value.selected;
+                })
+                return checked;
+            }
+        },
+        methods: {
+            add:function (index) {
+                this.list[index].count++;
+            },
+            reduce:function (index) {
+                this.list[index].count>1?this.list[index].count--:1;
+            },
+            remove:function (index) {
+                this.list.splice(index,1);
+            },
+            change:function () {
+                var selectAll = this.selectAll
+                this.list.forEach(function (value) {
+                    value.selected=selectAll;
+                })
+            }
+        },
+        watch:{
+            checkList:function () {
+                this.selectAll=this.checkList();
+            }
+        }
+    })
+</script>
+</body>
+</html>
